@@ -1,18 +1,20 @@
 import axios from 'axios';
 
 export default async function handler(req, res) {
-  // ✅ Set CORS headers for all responses
+  // ✅ This is the crucial part that sets the CORS headers.
+  // It allows your Vercel frontend to access this API.
   res.setHeader('Access-Control-Allow-Origin', 'https://gst-frontend-virid.vercel.app');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
 
-  // ✅ Handle preflight OPTIONS request
+  // ✅ This handles the "preflight" OPTIONS request sent by the browser.
+  // It responds with a 200 status code, allowing the actual POST request to proceed.
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // ✅ Handle POST request
+  // ✅ This ensures that only POST requests are processed for the main logic.
   if (req.method !== 'POST') {
     return res.status(405).json({ error: true, message: 'Method not allowed' });
   }
