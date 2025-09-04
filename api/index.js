@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     return res.status(200).end();
   }
 
-  // ✅ Only allow POST
+  // ✅ Continue with POST logic
   if (req.method !== 'POST') {
     return res.status(405).json({ error: true, message: 'Method not allowed' });
   }
