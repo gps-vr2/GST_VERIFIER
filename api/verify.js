@@ -1,17 +1,18 @@
 import axios from 'axios';
 
 export default async function handler(req, res) {
-  // CORS headers
+  // ✅ Set CORS headers for all responses
   res.setHeader('Access-Control-Allow-Origin', 'https://gst-frontend-virid.vercel.app');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
 
-  // Handle preflight OPTIONS request
+  // ✅ Handle preflight OPTIONS request
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
+  // ✅ Handle POST request
   if (req.method !== 'POST') {
     return res.status(405).json({ error: true, message: 'Method not allowed' });
   }
