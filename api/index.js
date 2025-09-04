@@ -1,17 +1,12 @@
-const express = require('express');
-const axios = require('axios');
-const cors = require('cors');
-const bodyParser = require('body-parser');
+import axios from 'axios';
 
-const app = express();
-const PORT = 3001;
-const API_KEY = 'vlFDBVFn6gUMf9JKcg8YcVN1db22'; // Replace with your AppyFlow key
+export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: true, message: 'Method not allowed' });
+  }
 
-app.use(cors());
-app.use(bodyParser.json());
-
-app.post('/api/verify', async (req, res) => {
   const { gstNo } = req.body;
+  const API_KEY = 'vlFDBVFn6gUMf9JKcg8YcVN1db22'; // Replace with your AppyFlow key
 
   if (!gstNo || gstNo.length !== 15) {
     return res.status(400).json({ error: true, message: 'Invalid GST number' });
@@ -29,7 +24,7 @@ app.post('/api/verify', async (req, res) => {
     const filing = data.filing || [];
     const compliance = data.compliance || {};
 
-    res.json({
+    res.status(200).json({
       gstin: taxpayer.gstin || '',
       legalName: taxpayer.lgnm || '',
       tradeName: taxpayer.tradeNam || '',
@@ -64,8 +59,4 @@ app.post('/api/verify', async (req, res) => {
     console.error('GST API Error:', error.response?.data || error.message);
     res.status(500).json({ error: true, message: 'Failed to fetch GST details' });
   }
-});
-
-app.listen(PORT, () => {
-  console.log(`🚀 GST Verifier backend running at http://localhost:${PORT}`);
-});
+}
